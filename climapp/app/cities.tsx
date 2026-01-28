@@ -1,8 +1,9 @@
 import { WeatherRow } from '@/components/WeatherRow';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from 'expo-router';
 import { useEffect, useState } from "react";
-import { FlatList, StyleSheet, TextInput, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import citiesData from '../data/cities.json';
 
@@ -45,10 +46,16 @@ const Cities = () => {
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
                     renderItem={({ item }) => (
-                        <WeatherRow
-                            cityName={item.city.replace(',', ' -')}
-                            temperature={item.temp}
-                        />
+                        <Pressable onPress={() => router.push(`/${item.city.toLowerCase()}`)}>
+                            {({ pressed }) => (
+                                <View style={{ opacity: pressed ? 0.5 : 1 }}>
+                                    <WeatherRow
+                                        cityName={item.city.replace(',', ' -')}
+                                        temperature={item.temp}
+                                    />
+                                </View>
+                            )}
+                        </Pressable>
                     )}
                 />
             </SafeAreaView>
