@@ -1,13 +1,26 @@
 import { WeatherRow } from '@/components/WeatherRow';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import citiesData from '../data/cities.json';
 
 const Cities = () => {
     const [description, setDescription] = useState('');
+    const [filteredCities, setFilteredCities] = useState(citiesData);
+
+    useEffect(() => {
+        if (description.length === 0) {
+            setFilteredCities(citiesData);
+            return;
+        }
+
+        const filtered = citiesData.filter(city =>
+            city.city.toLowerCase().includes(description.toLowerCase())
+        );
+        setFilteredCities(filtered);
+    }, [description]);
 
     return (
         <LinearGradient
@@ -27,13 +40,13 @@ const Cities = () => {
                 </View>
 
                 <FlatList
-                    data={citiesData}
+                    data={filteredCities}
                     keyExtractor={(city) => city.city}
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
                     renderItem={({ item }) => (
                         <WeatherRow
-                            cityName={item.city}
+                            cityName={item.city.replace(',', ' -')}
                             temperature={item.temp}
                         />
                     )}
