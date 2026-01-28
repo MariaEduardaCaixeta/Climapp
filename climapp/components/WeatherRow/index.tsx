@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         backgroundColor: '#FFFFFF15',
         borderRadius: 16,
-        marginBottom: 12,
     },
     cityName: {
         color: '#FFFFFF',

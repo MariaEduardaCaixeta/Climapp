@@ -2,8 +2,9 @@ import { WeatherRow } from '@/components/WeatherRow';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import { FlatList, StyleSheet, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import citiesData from '../data/cities.json';
 
 const Cities = () => {
     const [description, setDescription] = useState('');
@@ -24,7 +25,19 @@ const Cities = () => {
                     />
                     <Ionicons name="search" size={16} color="white" />
                 </View>
-                <WeatherRow cityName="São Paulo" temperature={28} />
+
+                <FlatList
+                    data={citiesData}
+                    keyExtractor={(city) => city.city}
+                    showsVerticalScrollIndicator={false}
+                    ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+                    renderItem={({ item }) => (
+                        <WeatherRow
+                            cityName={item.city}
+                            temperature={item.temp}
+                        />
+                    )}
+                />
             </SafeAreaView>
         </LinearGradient>
     );
@@ -38,7 +51,7 @@ const styles = StyleSheet.create({
         width: '90%',
         alignSelf: 'center',
         marginVertical: 20,
-        gap: 16,
+        gap: 40,
     },
     inputContainer: {
         paddingVertical: 8,
