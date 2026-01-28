@@ -1,3 +1,4 @@
+import { WeatherInfoRow } from "@/components/WeatherInfoRow";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams } from "expo-router";
@@ -68,16 +69,16 @@ const CityDetails = () => {
                         <Text style={styles.todayCardDescription}>{cityData?.description}</Text>
                     </View>
                     <View style={{ width: '100%', gap: 8 }}>
-                        <View style={styles.todayCardDetails}>
-                            <Ionicons name="water" size={24} color="#379ADC" style={styles.icon} />
-                            <Text style={[styles.todayCardText, { flex: 1 }]}>Humidity:</Text>
-                            <Text style={styles.todayCardText}>{cityData?.humidity}%</Text>
-                        </View>
-                        <View style={styles.todayCardDetails}>
-                            <Ionicons name="thermometer-outline" size={24} color="#E4750E" style={styles.icon} />
-                            <Text style={[styles.todayCardText, { flex: 1 }]}>Min/Max:</Text>
-                            <Text style={styles.todayCardText}>{todayForecast?.min}ºC / {todayForecast?.max}ºC</Text>
-                        </View>
+                        <WeatherInfoRow
+                            label="Umidade"
+                            value={`${cityData?.humidity}%`}
+                            icon={<Ionicons name="water" size={24} color="#0E87E4" style={styles.icon} />}
+                        />
+                        <WeatherInfoRow
+                            label="Min/Max"
+                            value={`${todayForecast?.min}ºC / ${todayForecast?.max}ºC`}
+                            icon={<Ionicons name="thermometer-outline" size={24} color="#E4750E" style={styles.icon} />}
+                        />
                     </View>
                 </View>
             </SafeAreaView>
@@ -130,6 +131,11 @@ const styles = StyleSheet.create({
         width: 72,
         height: 64
     },
+    icon: {
+        backgroundColor: '#FFF',
+        borderRadius: 8,
+        padding: 4,
+    },
     todayCardTemp: {
         color: '#FFFFFF',
         fontSize: 43,
@@ -140,15 +146,4 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: 'Montserrat_400Regular',
     },
-    todayCardDetails: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-        
-    },
-    icon: {
-        backgroundColor: '#FFF',
-        borderRadius: 8,
-        padding: 4,
-    }
 });
