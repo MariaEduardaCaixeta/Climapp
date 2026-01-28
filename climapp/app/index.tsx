@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -17,7 +18,7 @@ export default function Index() {
           source={require('../assets/images/weather.png')}
         />
         <Text style={styles.welcome}>Boas-vindas!</Text>
-        <Pressable style={styles.buttonContainer}>
+        <Pressable style={styles.buttonContainer} onPress={() => router.replace('/cities')}>
           {({ pressed }) => (
             <View style={[styles.button, { opacity: pressed ? 0.5 : 1 }]}>
               <Text style={styles.buttonText}>Entrar</Text>
@@ -43,7 +44,8 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 25,
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    fontFamily: 'Montserrat_400Regular',
   },
   buttonContainer: {
     width: '100%'
@@ -60,6 +62,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#01080E',
     fontSize: 20,
-    fontWeight: 500
+    fontWeight: '600',
+    fontFamily: 'Montserrat_600SemiBold',
   }
 });
