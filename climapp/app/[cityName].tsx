@@ -1,9 +1,10 @@
+import { WeatherForecast } from "@/components/WeatherForecast";
 import { WeatherInfoRow } from "@/components/WeatherInfoRow";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Forecast {
@@ -51,6 +52,15 @@ const CityDetails = () => {
         handleData();
     }, []);
 
+    if (!cityData) {
+        return (
+            <LinearGradient
+                colors={['#00457D', '#05051F']}
+                style={{ flex: 1 }}
+            />
+        )
+    }
+
     return (
         <LinearGradient
             colors={['#00457D', '#05051F']}
@@ -58,7 +68,11 @@ const CityDetails = () => {
         >
             <SafeAreaView style={styles.container}>
                 <View style={styles.header}>
-                    <Ionicons name="chevron-back" size={24} color="white" style={styles.chevron} />
+                    <Pressable onPress={() => router.back()} style={styles.chevron}>
+                        {({ pressed }) => (
+                            <Ionicons name="chevron-back" size={24} color="white" style={{ opacity: pressed ? 0.5 : 1 }} />
+                        )}
+                    </Pressable>
                     <Text style={styles.headerText}>{cityData?.city.replace(", ", " - ")}</Text>
                 </View>
                 <View style={styles.todayCard}>
@@ -80,6 +94,24 @@ const CityDetails = () => {
                             icon={<Ionicons name="thermometer-outline" size={24} color="#E4750E" style={styles.icon} />}
                         />
                     </View>
+                </View>
+
+                <View>
+                    <FlatList
+                        data={cityData?.forecast.slice(1)} // Pula o primeiro item (hoje)
+                        keyExtractor={(item) => item.date}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        ItemSeparatorComponent={() => <View style={{ width: 8 }} />}
+                        renderItem={({ item }) => (
+                            <WeatherForecast
+                                weekday={item.weekday}
+                                date={item.date}
+                                max={item.max}
+                                min={item.min}
+                            />
+                        )}>
+                    </FlatList>
                 </View>
             </SafeAreaView>
 
